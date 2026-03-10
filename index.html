@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<title>Quiz</title>
+
+<style>
+body{
+font-family: Arial;
+margin:40px;
+background:#f4f4f4;
+}
+
+.question{
+background:white;
+padding:15px;
+margin-bottom:10px;
+border-radius:8px;
+}
+
+button{
+padding:12px 20px;
+font-size:16px;
+cursor:pointer;
+}
+
+#result{
+margin-top:30px;
+background:white;
+padding:20px;
+border-radius:8px;
+}
+</style>
+</head>
+
+<body>
+
+<h1>Quiz</h1>
+
+<form id="quizForm"></form>
+
+<button onclick="checkQuiz()">Sprawdź wynik</button>
+
+<div id="result"></div>
+
+<script>
+
+const questions = [
+
+{
+q:"Ile machnięć ręką (dzwoni się) sygnaturką na początku mszy?",
+a:["1","2","3","4"],
+correct:"c"
+},
+
+{q:"Na które kolano się przyklęka przed tabernakulum na początku mszy?",a:["prawe","lewe","oba","żadne"],correct:"a"},
+{q:"Kiedy się wychodzi do służenia?",a:["po modlitwie księdza (chodzi o modlite po ciebie prosimy)","na początku czytania ciebie prosimy","w połowie czytania ciebie prosimy","między modlitwą ciebie prosimy, a modlitwą księdza"],correct:"d"},
+{q:"W jakiej kolejnośći się rozkłada kielich",a:["palka, kielich, korporał","korporał, palka, kielich","korporał, kielich, palka","nie rozkłada się wogule kielicha"],correct:"b"},
+{q:"W jakiej kolejności się podaje ampułki i w jakiej ręce",a:["woda: lewa, wino: prawa","woda: prawa, wino: lewa","wino: prawa, woda: lewa","wino: lewa, woda: prawa"],correct:"c"},
+{q:"po której stronie stoi lavabo a po której ręczniczek?",a:["lavabo:prawa, ręczniczki: lewe","lavabo: lewe, ręczniczki: prawe","obojętne","nie ma momentu kiedy jest potrzebny ręczniczek i lavabo"],correct:"a"},
+{q:"Jakie jest ułożenie służenia?",a:["ministrant: kielich, lavabo, dzwonki","ministrant: kielich, ręczniczek, dzwonki","ministrant: ampułki, lavabo, gong","ministrant: ampułki, ręczniczek, dzwonki"],correct:"a"},
+{q:"Ile machnięć ręką dzwonkami gdy ksiądz położy ręce?",a:["1","2","3","4"],correct:"c"},
+{q:"Ile uderzeń w gong przy podniesieniu kielicha?",a:["1","3","6","2"],correct:"b"},
+{q:"Kiedy się klęka do gongu i dzwonków?",a:["na święty święty święty","na hosanna podczas święty święty święty","w losowym momencie","po święty święty święty"],correct:"b"},
+{q:"Co się robi na ojcze nasz",a:["przygotowuje pateny","idzie się rozdać pateny","bije w gong","nic poprostu się modli"],correct:"a"},
+{q:"Co się robi na podanie znaku pokoju",a:["podaje się znak pokoju ministrantowi","idzie się rozdać pateny","idzie się podać znak pokoju księdzu i rozdać pateny","stoi w miejscu"],correct:"c"}
+
+];
+
+const form = document.getElementById("quizForm");
+
+questions.forEach((q,i)=>{
+let div=document.createElement("div");
+div.className="question";
+
+let html=`<p>${i+1}. ${q.q}</p>`;
+
+["a","b","c","d"].forEach((l,index)=>{
+html+=`
+<label>
+<input type="radio" name="q${i}" value="${l}">
+${l}) ${q.a[index]}
+</label><br>
+`;
+});
+
+div.innerHTML=html;
+form.appendChild(div);
+});
+
+form.innerHTML+=`
+<div class="question">
+<p>13. Kiedy się leje wodę do kielicha?</p>
+<input type="text" id="open1" style="width:100%">
+</div>
+`;
+
+form.innerHTML+=`
+<div class="question">
+<p>14. Kiedy się znosi kielich z ołtarza?</p>
+<textarea id="open2" style="width:100%"></textarea>
+</div>
+`;
+
+function checkQuiz(){
+
+let resultHTML="";
+let score=0;
+
+questions.forEach((q,i)=>{
+let selected = document.querySelector(`input[name="q${i}"]:checked`);
+
+if(selected && selected.value===q.correct){
+resultHTML+=`${i+1} ✅<br>`;
+score++;
+}else{
+resultHTML+=`${i+1} ⛔<br>`;
+}
+});
+
+resultHTML+=`<br>13: ${document.getElementById("open1").value}<br>`;
+resultHTML+=`14: ${document.getElementById("open2").value}<br>`;
+
+resultHTML+=`<br><b>Wynik: ${score}/${questions.length}</b>`;
+
+document.getElementById("result").innerHTML=resultHTML;
+
+}
+
+</script>
+
+</body>
+</html>
